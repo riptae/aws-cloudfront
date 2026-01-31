@@ -30,7 +30,7 @@ resource "aws_s3_bucket_public_access_block" "acls" {
   restrict_public_buckets = true
 }
 
-# [2] site
+# [2] s3 object (web page)
 resource "aws_s3_object" "site" {
   bucket       = aws_s3_bucket.s3_bucket.id
   key          = "index.html"
@@ -48,4 +48,13 @@ resource "aws_s3_object" "site" {
         </body>
     </html>
   EOF
+}
+
+# [3] OAC
+resource "aws_cloudfront_origin_access_control" "oac" {
+    name = "oac-for-s3"
+    description = "OAC for private S3"
+    origin_access_control_origin_type = "s3"
+    signing_behavior = "always"
+    signing_protocol = "sigv4"
 }
