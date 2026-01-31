@@ -94,3 +94,30 @@ resource "aws_cloudfront_distribution" "dst" {
     cloudfront_default_certificate = true
   }
 }
+
+# [5] GetObject policy
+data "aws_iam_policy_document" "allow_cf" {
+  statement {
+    sid     = "AllowCloudFrontRead"
+    effect  = "Allow"
+    actions = ["s3:GetObject"]
+
+    resources = ["${aws_s3_bucket.s3_bucket.arn}/*"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [aws_cloudfront_distribution.dst.arn]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "policy" {
+  bucket = aws_s3_bucket.s3_bucket.id
+  policy = data.aws_iam_policy_document.allow_cf.json
+}

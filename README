@@ -22,3 +22,8 @@ REPO 개설
 [4]
 - cloudfront_dst
 * dst생성해야 OAC도 생성됨
+
+-
+
+[5]
+- s3_policy
