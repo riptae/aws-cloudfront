@@ -29,3 +29,23 @@ resource "aws_s3_bucket_public_access_block" "acls" {
   ignore_public_acls      = true
   restrict_public_buckets = true
 }
+
+# [2] site
+resource "aws_s3_object" "site" {
+  bucket       = aws_s3_bucket.s3_bucket.id
+  key          = "index.html"
+  content_type = "text/html; charset=utf-8"
+
+  content = <<EOF
+    <!doctype html>
+    <html>
+        <head>
+            <meta charset="utf-8">
+            <title>S3+cloudfront</title>
+        </head>
+        <body>
+            <h1>hello CLOUDFRONT + S3(private)</h1>
+        </body>
+    </html>
+  EOF
+}

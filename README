@@ -6,3 +6,8 @@ REPO 개설
 [1]
 - provider
 - bucket + acls
+
+-
+
+[2]
+- web page (s3_object)
